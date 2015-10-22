@@ -9,7 +9,6 @@ using Value = int;
 using Values = vector<Value>;
 
 class Frankenstein {
-	Values const & values;
 	struct Context {
 		Value value;
 		int total;
@@ -46,8 +45,7 @@ int main()
 	}
 }
 
-Frankenstein::Frankenstein(Values const & values):
-	values(values)
+Frankenstein::Frankenstein(Values const & values)
 {
 	Context tc = {values[0], 1, 0, 0};
 
@@ -74,11 +72,11 @@ void Frankenstein::solve(Index iMin, Index iMax)
 	int bestTotal = 0;
 	for( auto const & tc : rank ) {
 		auto total = tc.totalSliced(iMin,iMax);
-		if( total >= bestTotal ) {
+		if( total > bestTotal ) {
 			bestTotal = total;
-			// slicing did not happen. this is the best total already. done!
-			if( total == tc.total ) break;
 		}
+		// slicing did not happen. totals only will be lower now. stop
+		if( total == tc.total ) break;
 	}
 	cout << bestTotal << endl;
 }
